@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<!-- header -->
+	<div class="cabecera">
+			{% image '@AppBundle/Resources/public/images/body2.jpeg' %}
+	   			<img class="" src="{{ asset_url }}" alt="portada"/>
+			{% endimage %}
+	</div>
+	<section class="section section-cabecera">
+		<div class="container">
+			<p>Párrafo donde explicamos que realiza la tienda en si.</p>
+		</div>
+	</section>
+{% endblock %}

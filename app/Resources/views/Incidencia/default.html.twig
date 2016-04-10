@@ -1,0 +1,82 @@
+{# app/Resources/views/incidencia/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'AppBundle' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block title %}Ordenes de reparación{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row">   
+       		<div class="col-xs-12">
+       			<div class="col-xs-12 col-sm-12">
+    				<p style="padding:10px;"></p>
+    			</div>
+				<ol class="breadcrumb">
+		        	<li><a href="{{ path('index') }}">inicio</a></li>
+		            <li>incidencia</li>
+		       	</ol>		       	       	
+		    </div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<h2>Incidencias</h2>
+				<a href="{{ path('newIncidencia') }}"><button type="button" class="btn btn-default">Nueva</button></a>	
+				<hr>	
+				<table class="table table-striped">
+					<tbody>
+						<thead>
+							<tr>
+								<td>Id</td>
+								<td>Componente</td>
+								<td>Estado</td>
+								<td>Fecha Alta</td>
+								<td>Fecha Cierre</td>
+								<td></td>
+								{% if is_granted('ROLE_ADMIN') %}
+									<td>{{ 'global.edit'|trans }}</td>
+									<td>{{ 'global.delete'|trans }}</td>
+								{% endif %}
+							</tr>
+						</thead>
+							{% for incidencia in incidencias%}
+								<tr>
+									<td><a href="{{
+										path(
+											'showIncidencia',
+											{ 'id': incidencia.id }
+										)
+										}}">
+										{{ incidencia.id }}</a></td>						
+									<td>{{ incidencia.componente }}</td>
+									<td>{{ incidencia.estado.estado }}</td>									
+									<td>{{ incidencia.fecha_alta|date("d/m/Y") }}</td>
+									<td>{{ incidencia.fecha_cierre|date("d/m/Y") }}</td>
+									{% if is_granted('ROLE_ADMIN') %}
+									<td><a href="{{
+										path(
+											'editIncidencia',
+											{ 'id': incidencia.id }
+										) 
+										}}"><i class="fa fa-pencil-square-o"></i></a></td>
+									<td><a href="{{
+										path(
+											'deleteIncidencia',
+											{ 'id': incidencia.id }
+										) 
+										}}"><i class="fa fa-trash fa-lg"></i></a></td>
+									{% endif %}
+								</tr>
+							{% endfor %} 
+					</tbody>
+				</table>
+				<hr>			
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{# table table-striped //  table-bordered#}

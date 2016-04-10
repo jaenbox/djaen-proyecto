@@ -1,0 +1,74 @@
+{% trans_default_domain 'AppBundle' %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="ticket">
+	    <meta name="author" content="David Jaen Revert">
+        <title>{% block title %}Djaen ticketing{% endblock %}</title>
+        {% block stylesheets %}
+        	<!-- Bootstrap -->
+	        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" />
+	        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+	        <!-- Latest compiled and minified CSS -->
+	        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	        <!-- Optional theme -->
+	        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+	        <!-- Latest compiled and minified JavaScript -->
+	        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	        <!--  Google font ROBOTO -->
+	        <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+	        
+        	{% stylesheets 'bundles/framework/css/mystyles.css' filter='cssrewrite' %}    
+			    <link rel="stylesheet" href="{{ asset_url }}"/>
+			{% endstylesheets %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body data-spy="scroll" data-target="#myScrollspy" data-offset-top="30">
+    	<!-- Navbar -->
+    	<div class="navbar-wrapper">
+    		<div class="navbar-container">
+				<div class= "navbar navbar-inverse navbar-fixed-top menu" role="navigation">
+					<div class="navbar-header">
+		            	
+	            	</div>
+					<div class="navbar-header">
+						<!-- Button for smallest screens -->
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+						<a class="navbar-brand" href="#">
+							<p>PC-Reparaciones</p>
+						</a>
+					</div>
+					<div class="navbar-collapse collapse">
+						<ul class="nav navbar-nav pull-right">
+							<li><a href="{{ path('index') }}">Inicio</a></li>
+							<li><a href="{{ path('contact') }}">Contacto</a></li>
+							<li><a href="{{ path('incidencia') }}">Incidencia</a>
+							<li><a href="{{ path('user') }}">Usuarios</a>
+							<li><a href="#">Registrate</a></li>
+							<li><a class="btn btn-rounded" href="#">Iniciar sesión</a></li>
+							<!-- Botón Idioma-->
+	                        <li class="dropdown">
+	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+	                            role="button" aria-haspopup="true" aria-expanded="false">
+	                            <span class="glyphicon glyphicon-flag"></span> {{ app.request.locale }} <span class="caret"></span></a>
+	                            <ul class="dropdown-menu">
+	                                <li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'es'})) }}">es</a></li>                          
+	                        		<li><a href="{{ path(app.request.get('_route'), app.request.get('_route_params')|merge({'_locale': 'en'})) }}">en</a></li>
+	                            </ul>
+	                        </li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

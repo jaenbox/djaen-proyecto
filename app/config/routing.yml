@@ -1,0 +1,67 @@
+app:
+  resource: "@AppBundle/Controller/"
+  type: annotation
+
+index:
+  path: /
+  defaults: { _controller: AppBundle:Default:index }
+
+contact:
+  path: /contact
+  defaults: { _controller: AppBundle:Default:contact }
+  
+user:
+  path: /user
+  defaults: { _controller: AppBundle:User:default }
+
+newCliente:
+  path: /cliente/new
+  defaults: { _controller: AppBundle:Cliente:new }
+
+editCliente:
+  path: /cliente/edit/{id}
+  defaults: { _controller: AppBundle:Cliente:edit }
+
+deleteCliente:
+  path: /cliente/delete/{id}
+  defaults: { _controller: AppBundle:Cliente:delete }
+
+listCliente:
+  path: /Cliente/list
+  defaults: { _controller: AppBundle:Cliente:list }
+
+showCliente:
+  path: /cliente/show/{id}
+  defaults: { _controller: AppBundle:Cliente:show }
+
+newAdministrador:
+  path: /admin/new
+  defaults: { _controller: AppBundle:Administrador:new }
+  
+listAdministrador:
+  path: /admin/list
+  defaults: { _controller: AppBundle:Administrador:list }
+  
+incidencia:
+  path: /incidencia
+  defaults: { _controller: AppBundle:Incidencia:default }
+
+newIncidencia:
+  path: /incidencia/new
+  defaults: { _controller: AppBundle:Incidencia:new }
+
+editIncidencia:
+  path: /incidencia/edit/{id}
+  defaults: { _controller: AppBundle:Incidencia:edit }
+
+deleteIncidencia:
+  path: /incidencia/delete/{id}
+  defaults: { _controller: AppBundle:Incidencia:delete }
+
+listIncidencia:
+  path: /incidencia/list
+  defaults: { _controller: AppBundle:Incidencia:list }
+
+showIncidencia:
+  path: /incidencia/show/{id}
+  defaults: { _controller: AppBundle:Incidencia:show }

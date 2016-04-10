@@ -1,0 +1,11 @@
+<project name="djaen-proyecto" default="deploy" basedir=".">
+  <property file="build.properties"></property>
+  <target name="deploy">
+      <delete dir="${full.deploy.path}"></delete>
+      <copy todir="${full.deploy.path}">
+          <fileset dir=".">
+             <exclude name="**/test/**"></exclude>
+         </fileset>
+      </copy>
+  </target>
+ </project>
