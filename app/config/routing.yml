@@ -26,10 +26,6 @@ deleteCliente:
   path: /cliente/delete/{id}
   defaults: { _controller: AppBundle:Cliente:delete }
 
-listCliente:
-  path: /Cliente/list
-  defaults: { _controller: AppBundle:Cliente:list }
-
 showCliente:
   path: /cliente/show/{id}
   defaults: { _controller: AppBundle:Cliente:show }
@@ -37,10 +33,50 @@ showCliente:
 newAdministrador:
   path: /admin/new
   defaults: { _controller: AppBundle:Administrador:new }
-  
-listAdministrador:
-  path: /admin/list
-  defaults: { _controller: AppBundle:Administrador:list }
+
+editAdministrador:
+  path: /admin/edit/{id}
+  defaults: { _controller: AppBundle:Administrador:edit }
+
+deleteAdministrador:
+  path: /admin/delete/{id}
+  defaults: { _controller: AppBundle:Administrador:delete }
+
+showAdministrador:
+  path: /admin/show/{id}
+  defaults: { _controller: AppBundle:Administrador:show }
+
+newHelpDesk:
+  path: /helpdesk/new
+  defaults: { _controller: AppBundle:HelpDesk:new }
+
+editHelpDesk:
+  path: /helpdesk/edit/{id}
+  defaults: { _controller: AppBundle:HelpDesk:edit }
+
+deleteHelpDesk:
+  path: /helpdesk/delete/{id}
+  defaults: { _controller: AppBundle:HelpDesk:delete }
+
+showHelpDesk:
+  path: /helpdesk/show/{id}
+  defaults: { _controller: AppBundle:HelpDesk:show }
+
+newTecnico:
+  path: /tecnico/new
+  defaults: { _controller: AppBundle:Tecnico:new }
+
+editTecnico:
+  path: /tecnico/edit/{id}
+  defaults: { _controller: AppBundle:Tecnico:edit }
+
+deleteTecnico:
+  path: /tecnico/delete/{id}
+  defaults: { _controller: AppBundle:Tecnico:delete }
+
+showTecnico:
+  path: /tecnico/show/{id}
+  defaults: { _controller: AppBundle:Tecnico:show }
   
 incidencia:
   path: /incidencia

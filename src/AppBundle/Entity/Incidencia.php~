@@ -59,7 +59,7 @@ class Incidencia {
 	// Relación de "Incidencia --- Administrador" N:1.
 	/**
 	 * @ORM\ManyToOne(targetEntity="Administrador", inversedBy="incidencias")
-	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=true)
 	 */
 	protected $administrador;
 	

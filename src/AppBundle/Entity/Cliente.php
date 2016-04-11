@@ -18,7 +18,7 @@ class Cliente extends Persona {
 	//Relación de "Administrador --- Cliente" 1:N con la asignación de metadatos, método "Annotations".
 	/**
 	 * @ORM\ManyToOne(targetEntity="Administrador", inversedBy="clientes")
-	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=false)
+	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=true)
 	 * @Assert\NotBlank(message="val.notblank")
 	 */
 	protected $administrador;

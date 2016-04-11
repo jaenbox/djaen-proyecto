@@ -1,4 +1,4 @@
-{# app/Resources/views/Administrador/new.html.twig #}
+{# app/Resources/views/HelpDesk/new.html.twig #}
 
 {% extends 'base.html.twig' %}
 {% trans_default_domain 'AppBundle' %}
@@ -7,7 +7,7 @@
 	{{ parent() }}
 {% endblock %}
 
-{% block title %}Admin-nuevo{% endblock %}
+{% block title %}HelpDesk-nuevo{% endblock %}
 
 {% block body %}
 	<div class="container contenedor">
@@ -24,7 +24,7 @@
 		</div>
 		<a href="{{ path('user') }}"><button type="button" class="btn btn-default">Atrás</button></a>
 		<hr>
-		<h2>Nuevo Administrador</h2>
+		<h2>Nuevo HelpDesk</h2>
 		<div class="row">
 			<div class="col-sm-8">				
 				{{ form_start(form) }}		
