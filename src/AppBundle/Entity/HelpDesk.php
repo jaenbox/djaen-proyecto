@@ -26,7 +26,7 @@ class HelpDesk extends Persona {
 	//Relación de "Administrador --- HelpDesk" 1:N con la asignación de metadatos, método "Annotations".
 	/**
 	 * @ORM\ManyToOne(targetEntity="Administrador", inversedBy="helpdesk")
-	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=false)
+	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id")
 	 * @Assert\NotBlank(message="val.notblank")
 	 */
 	protected $administrador;

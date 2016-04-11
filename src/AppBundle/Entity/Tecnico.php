@@ -26,7 +26,7 @@ class Tecnico extends Persona {
 	//Relación de "Administrador --- Tecnico" 1:N con la asignación de metadatos, método "Annotations".
 	/**
 	 * @ORM\ManyToOne(targetEntity="Administrador", inversedBy="tecnico")
-	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=false)
+	 * @ORM\JoinColumn(name="administrador_id", referencedColumnName="id", nullable=true)
 	 * @Assert\NotBlank(message="val.notblank")
 	 */
 	protected $administrador;
