@@ -20,6 +20,7 @@ class Administrador extends Persona {
 	/**
 	 * @ORM\OneToMany(targetEntity="Incidencia", mappedBy="administrador")
 	 */
+<<<<<<< HEAD
 	protected $incidencias;
 	
 	// Relación de "Administrador --- Tecnico" 1:N.
@@ -39,6 +40,27 @@ class Administrador extends Persona {
 		$this->incidencias = new ArrayCollection();
 		$this->tecnicos = new ArrayCollection();
 		$this->clientes = new ArrayCollection();
+=======
+	protected $incidencias;	
+
+    // Relación de "Administrador --- Incidencias" 1:N.
+    /**
+     * @ORM\OneToMany(targetEntity="Tecnico", mappedBy="administrador")
+     */
+    protected $tecnicos;
+
+    // Relación de "Administrador --- Cliente" 1:N.
+    /**
+     * @ORM\OneToMany(targetEntity="Cliente", mappedBy="administrador")
+     */
+    protected $clientes;
+    
+	public function __construct()
+	{
+		$this->incidencias = new ArrayCollection();
+        $this->tecnicos = new ArrayCollection();
+        $this->clientes = new ArrayCollection();
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
 	}
 	
     /**
@@ -73,7 +95,11 @@ class Administrador extends Persona {
     {
         return $this->incidencias;
     }
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
     /**
      * Add tecnicos
      *
@@ -82,10 +108,18 @@ class Administrador extends Persona {
      */
     public function addTecnico(\AppBundle\Entity\Tecnico $tecnicos)
     {
+<<<<<<< HEAD
     	$this->tecnicos[] = $tecnicos;
     	return $this;
     }
     
+=======
+        $this->tecnicos[] = $tecnicos;
+
+        return $this;
+    }
+
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
     /**
      * Remove tecnicos
      *
@@ -93,6 +127,7 @@ class Administrador extends Persona {
      */
     public function removeTecnico(\AppBundle\Entity\Tecnico $tecnicos)
     {
+<<<<<<< HEAD
     	$this->tecnicos->removeElement($tecnicos);
     }
     
@@ -106,6 +141,21 @@ class Administrador extends Persona {
     	return $this->tecnicos;
     }
     
+=======
+        $this->tecnicos->removeElement($tecnicos);
+    }
+
+    /**
+     * Get tecnicos
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTecnicos()
+    {
+        return $this->tecnicos;
+    }
+
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
     /**
      * Add clientes
      *
@@ -114,10 +164,18 @@ class Administrador extends Persona {
      */
     public function addCliente(\AppBundle\Entity\Cliente $clientes)
     {
+<<<<<<< HEAD
     	$this->clientes[] = $clientes;
     	return $this;
     }
     
+=======
+        $this->clientes[] = $clientes;
+
+        return $this;
+    }
+
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
     /**
      * Remove clientes
      *
@@ -125,6 +183,7 @@ class Administrador extends Persona {
      */
     public function removeCliente(\AppBundle\Entity\Cliente $clientes)
     {
+<<<<<<< HEAD
     	$this->clientes->removeElement($clientes);
     }
     
@@ -136,5 +195,18 @@ class Administrador extends Persona {
     public function getClientes()
     {
     	return $this->clientes;
+=======
+        $this->clientes->removeElement($clientes);
+    }
+
+    /**
+     * Get clientes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getClientes()
+    {
+        return $this->clientes;
+>>>>>>> 882894b788a7a4e0da3b731b5bf2f7ca37b0296d
     }
 }
