@@ -34,7 +34,11 @@
 					<tr><th><i class="fa fa-at fa-2x"></th><td>{{ tecnico.email }}</td></tr>
 					<tr><th><i class="fa fa-phone-square fa-2x"></th><td>{{ tecnico.phone }}</td></tr>					
 					<tr><th>Dirección</th><td>{{ tecnico.address }}</td></tr>
-					<tr><th>Especialidad</th><td>{{ tecnico.especialidad }}</td></tr>
+					<tr><th>Especialidad</th><td>	{% if tecnico.especialidad == 's' %}
+														Software</td></tr>
+													{% else %}
+														Hardware</td></tr>	
+													{% endif %}
 					<tr><th>Administrador</th><td>{{ tecnico.administrador.name }}</td></tr>
 		</table> 
 		<hr>

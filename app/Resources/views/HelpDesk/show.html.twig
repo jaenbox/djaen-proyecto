@@ -33,8 +33,11 @@
 					<tr><th>DNI</th><td>{{ helpdesk.dni }}</td></tr>
 					<tr><th><i class="fa fa-at fa-2x"></th><td>{{ helpdesk.email }}</td></tr>
 					<tr><th><i class="fa fa-phone-square fa-2x"></th><td>{{ helpdesk.phone }}</td></tr>					
-					<tr><th>Dirección</th><td>{{ helpdesk.address }}</td></tr>
-					<tr><th>Idioma</th><td>{{ helpdesk.idioma }}</td></tr>
+					<tr><th>Dirección</th><td>{{ helpdesk.address }}</td></tr>				
+					<tr><th>Idioma</th><td>	{% for idiom in helpdesk.idioma %}
+												{{ idiom }},
+											{% endfor %}
+											</td></tr>
 					<tr><th>Administrador</th><td>{{ helpdesk.administrador.name }}</td></tr>
 			</tbody>
 		</table> 

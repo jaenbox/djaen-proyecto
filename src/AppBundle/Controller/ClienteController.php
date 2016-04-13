@@ -6,29 +6,21 @@ use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Cliente;
 use AppBundle\Entity\Administrador;
+use Symfony\Component\Validator\Constraints\True;
 
 
 class ClienteController extends Controller {
-	/*
-	public function defaultAction(Request $request) {
-		// Recogemos el repositorio
-		$repository = $this->getDoctrine() ->getRepository('AppBundle:Cliente');
-
-		// recuperamos todos los recintos existentes
-		$clientes = $repository->findAll();
-
-		// Se muestra la plantilla por defecto con el listado de incidencias.
-		return $this->render('User/default.html.twig', array( 'clientes' => $clientes));
-
-	}
-	*/
+	
 	public function newAction(Request $request) {
 		
 		// Objeto usuario
 		$cliente = new Cliente();
 		
-		$admin = self::search_admin();
-		$cliente->setAdministrador($admin);	// Se añade este admin aleatorio al cliente.
+		// Objeto administrador
+		//$admin = new Administrador();
+		
+		//$admin = self::search_admin();
+		//$cliente->setAdministrador($admin);	// Se añade este admin aleatorio al cliente.
 		
 		// Creamos el formulario
 		$form = $this->createFormBuilder($cliente)
@@ -38,11 +30,11 @@ class ClienteController extends Controller {
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
 		->add('address', 'text', ['label' => 'Dirección'])
-		/*->add('administrador', 'entity', array(
+		->add('administrador', 'entity', array(
 				'class' => 'AppBundle:Administrador',
 				'label' => 'Administrador',
 				'choice_label' => 'name',
-		))*/
+		))
 		->add('save', 'submit', array('label' => 'Guardar'))
 		->getForm();
 		
@@ -155,24 +147,50 @@ class ClienteController extends Controller {
 
 
 	}
-	
+	/*
 	protected function search_admin() {
 		
 		do {
-			$flag = False;
-			// Recogemos el repositorio
-			$repository = $this->getDoctrine() ->getRepository('AppBundle:Administrador');
-			$admins = $repository->findAll();
-			$cantidad = count($admins, 1);	// Se calcular todos los admins.		
-			$id = mt_rand ( 1 , $cantidad );	// Se selecciona uno al azar
-			
-			if($repository->find($id)){
-				$flag = True;		
-			}
-			
-		} while ($flag != True);
+			// Objeto administrador
+			$admin = new Administrador();
+				
+			$logger = $this->get('logger');
+	    	$logger->info(' ============= info =======================');
+	    	
+	    	$em = $this->getDoctrine()->getManager(); // Se recoge el manager
+	    	$admins = $em->getRepository('AppBundle:Administrador')->findAll(); // Se recogen todos los registros de la tabla.
+	    	$array = array();
+	    	foreach ( $ad as $admins){
+	    		array	
+	    	}
+	    	
+	    	$cantidad = count($admins, 0);	// Se calcular todos los admins.
+	    	$logger->info(' Localizamos los administradores almacenados '.$cantidad);
+	    	$id = mt_rand( 1 , $cantidad );	// Se selecciona uno al azar
+	    	$logger->info(' Recogemos el random '.$id);
+	    	$admin = $em->getRepository('AppBundle:Administrador')->find($id);	// Buscamos en la db por id
+    	
+    		$flag = False;
+    		
+    		if($admin) {
+    			$flag = True;
+    			return $admin;
+    		} else {
+    			$logger->info('No existe el admin con el id: '.$id);
+    		}
+    				
+    	} while ($flag != True);
+    	// Recogemos el repositorio
+    	/*$repository = $this->getDoctrine() ->getRepository('AppBundle:Administrador');
+    	$admins = $repository->findAll();
+    	$cantidad = count($admins, 1);	// Se calcular todos los admins.
+    	$logger->info(' Localizamos 2 administradores '.$cantidad);
+    	$id = mt_rand ( 1 , $cantidad );	// Se selecciona uno al azar
+    	$logger->info(' Recogemos el random '.$id);
+    	
 		
-		
+		return $admin;
 	}
+	*/
 
 }

@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class HelpDesk extends Persona {
 	/**
-	 * @ORM\Column(type="string", length=100)
+	 * @ORM\Column(type="simple_array", length=100)
 	 * @Assert\NotBlank()
 	 *
 	 */

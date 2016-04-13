@@ -7,6 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use AppBundle\Entity\Administrador;
+use AppBundle\Entity\Incidencia;
+use AppBundle\Entity\Tecnico;
+
+
 /**
  * 
  * @author jaen
@@ -73,7 +78,7 @@ class Administrador extends Persona {
     {
         return $this->incidencias;
     }
-    
+
     /**
      * Add tecnicos
      *
@@ -82,6 +87,7 @@ class Administrador extends Persona {
      */
     public function addTecnico(\AppBundle\Entity\Tecnico $tecnicos)
     {
+
     	$this->tecnicos[] = $tecnicos;
     	return $this;
     }
@@ -93,6 +99,7 @@ class Administrador extends Persona {
      */
     public function removeTecnico(\AppBundle\Entity\Tecnico $tecnicos)
     {
+
     	$this->tecnicos->removeElement($tecnicos);
     }
     
@@ -105,7 +112,7 @@ class Administrador extends Persona {
     {
     	return $this->tecnicos;
     }
-    
+
     /**
      * Add clientes
      *
@@ -114,6 +121,7 @@ class Administrador extends Persona {
      */
     public function addCliente(\AppBundle\Entity\Cliente $clientes)
     {
+
     	$this->clientes[] = $clientes;
     	return $this;
     }
@@ -125,6 +133,7 @@ class Administrador extends Persona {
      */
     public function removeCliente(\AppBundle\Entity\Cliente $clientes)
     {
+
     	$this->clientes->removeElement($clientes);
     }
     
@@ -136,5 +145,8 @@ class Administrador extends Persona {
     public function getClientes()
     {
     	return $this->clientes;
+
+        $this->clientes->removeElement($clientes);
     }
+
 }

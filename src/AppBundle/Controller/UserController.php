@@ -38,34 +38,4 @@ class UserController extends Controller {
 	
 	}
 	
-	public function newAction(Request $request) {
-		
-		
-		
-	}
-	
-	public function editAction($id, Request $request) {
-	
-		
-	
-	}
-	
-	public function deleteAction(Request $request) {
-	
-		
-	
-	}
-	
-	public function listAction(Request $request) {
-	
-	
-	
-	}
-	
-	public function showAction(Request $request) {
-	
-	
-	
-	}
-	
 }

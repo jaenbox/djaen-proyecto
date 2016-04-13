@@ -4,40 +4,31 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use AppBundle\Entity\HelpDesk;
+use AppBundle\Entity\Tecnico;
 use AppBundle\Entity\Administrador;
 
 
-class HelpDeskController extends Controller {
+class TecnicoController extends Controller {
 
 	public function newAction(Request $request) {
 
-		// Objeto usuario
-		$helpdesk = new HelpDesk();
+		// Objeto tecnico
+		$tecnico = new Tecnico();
 
 		//$admin = self::search_admin();
 		//$cliente->setAdministrador($admin);	// Se añade este admin aleatorio al cliente.
-		// Array de idiomas disponibles.
-		$idiomas = array(
-				'idioma' => array(
-						'spa' => 'Castellano',
-						'en' => 'Inglés',
-						'vlc' => 'Valencià'),
-		);
+		
 		// Creamos el formulario
-		$form = $this->createFormBuilder($helpdesk)
+		$form = $this->createFormBuilder($tecnico)
 		->add('name', 'text', ['label' => 'Nombre'])
 		->add('surname', 'text', ['label' => 'Apellidos'])
 		->add('dni', 'text', ['label' => 'DNI'])
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
 		->add('address', 'text', ['label' => 'Dirección'])
-		->add('idioma', 'choice', array(
-				'label' => 'Idioma',				
-				'required' => false,
-				'multiple' => true,
-				'expanded' => true,
-				'choices' => $idiomas,
+		->add('especialidad', 'choice', array(
+				'label' => 'Especialidad',
+				'choices' => array('h' => 'Hardware', 's' => 'Software'),
 		))
 		->add('administrador', 'entity', array(
 				'class' => 'AppBundle:Administrador',
@@ -54,7 +45,7 @@ class HelpDeskController extends Controller {
 			if($form->isValid()) {
 				// Se almacena en la base de datos.
 				$em = $this->getDoctrine()->getManager();
-				$em->persist($helpdesk);	// Persistimos
+				$em->persist($tecnico);	// Persistimos
 				$em->flush();			// Alamcenamos en la db
 					
 				$nextAction = 'user';
@@ -64,7 +55,7 @@ class HelpDeskController extends Controller {
 
 		}
 
-		return $this->render('HelpDesk/new.html.twig', array(
+		return $this->render('Tecnico/new.html.twig', array(
 				'form' => $form->createView(),
 		));
 
@@ -73,34 +64,25 @@ class HelpDeskController extends Controller {
 	public function editAction($id, Request $request) {
 
 		// Objeto HelpDesk
-		$helpdesk = new HelpDesk();
+		$tecnico = new Tecnico();
 
 		$em = $this->getDoctrine()->getManager();
-		$helpdesk = $em->getRepository('AppBundle:HelpDesk')->find($id);
+		$tecnico = $em->getRepository('AppBundle:Tecnico')->find($id);
 
 		//$admin = self::search_admin();
 		//$cliente->setAdministrador($admin);	// Se añade este admin aleatorio al cliente.
-		// Array de idiomas disponibles. 
-		$idiomas = array(
-				'idioma' => array(
-						'spa' => 'Castellano', 
-						'en' => 'Inglés', 
-						'vlc' => 'Valencià'),
-				);
+
 		// Creamos el formulario
-		$form = $this->createFormBuilder($helpdesk)
+		$form = $this->createFormBuilder($tecnico)
 		->add('name', 'text', ['label' => 'Nombre'])
 		->add('surname', 'text', ['label' => 'Apellidos'])
 		->add('dni', 'text', ['label' => 'DNI'])
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
 		->add('address', 'text', ['label' => 'Dirección'])
-		->add('idioma', 'choice', array(
-				'label' => 'Idioma',
-				'required' => false,
-				'multiple' => true,
-				'expanded' => true,
-				'choices' => $idiomas
+		->add('especialidad', 'choice', array(
+				'label' => 'Especialidad',
+				'choices' => array('h' => 'Hardware', 's' => 'Software'),
 		))
 		->add('administrador', 'entity', array(
 				'class' => 'AppBundle:Administrador',
@@ -118,7 +100,7 @@ class HelpDeskController extends Controller {
 			if($form->isValid()) {
 				// Se almacena en la base de datos.
 				$em = $this->getDoctrine()->getManager();
-				$em->persist($helpdesk);	// Persistimos
+				$em->persist($tecnico);	// Persistimos
 				$em->flush();			// Alamcenamos en la db
 					
 				$nextAction = 'user';
@@ -127,7 +109,7 @@ class HelpDeskController extends Controller {
 			}
 		}
 
-		return $this->render('HelpDesk/new.html.twig', array(
+		return $this->render('Tecnico/new.html.twig', array(
 				'form' => $form->createView(),
 		));
 	}
@@ -135,19 +117,19 @@ class HelpDeskController extends Controller {
 	public function deleteAction($id) {
 
 		// Objeto administrador
-		$helpdesk = new HelpDesk();
+		$tecnico = new Tecnico();
 
 		$em = $this->getDoctrine()->getManager(); // Se recoge el manager
-		$helpdesk = $em->getRepository('AppBundle:HelpDesk')->find($id);	// Buscamos en la db por id
+		$tecnico = $em->getRepository('AppBundle:Tecnico')->find($id);	// Buscamos en la db por id
 
 		// Si no existe el administrador mostramos excepción
-		if(!$helpdesk) {
+		if(!$tecnico) {
 			throw $this->createNotFoundException(
-					'No existe el helpdesk con el id '.$id );
+					'No existe el técnico con el id '.$id );
 		}
 
 		// Se elimina el cliente y se actualiza la base de datos.
-		$em->remove($helpdesk);
+		$em->remove($tecnico);
 		$em->flush();
 
 		$nextAction = 'user';
@@ -157,15 +139,15 @@ class HelpDeskController extends Controller {
 
 	public function showAction($id) {
 
-		$helpdesk = $this->getDoctrine()->getRepository("AppBundle:HelpDesk")->find($id);	// Buscamos en la db por id
+		$tecnico = $this->getDoctrine()->getRepository("AppBundle:Tecnico")->find($id);	// Buscamos en la db por id
 
 		// Comprobamos que exista el heklpdesk.
-		if (!$helpdesk) {
-			throw $this->createNotFoundException('No existe el helpdesk con el id '.$id );
+		if (!$tecnico) {
+			throw $this->createNotFoundException('No existe el técnico con el id '.$id );
 		}
 
 		//Pasar product a una plantilla.
-		return $this->render('HelpDesk/show.html.twig', array( 'helpdesk' => $helpdesk));
+		return $this->render('Tecnico/show.html.twig', array( 'tecnico' => $tecnico));
 		
 	}
 
