@@ -1,0 +1,51 @@
+{# app/Resources/views/Incidencia/show.html.twig #}
+{% extends "base.html.twig" %}
+{% trans_default_domain 'AppBundle' %}
+
+{% block title %} Incidencia-show {% endblock %}
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="container contenedor">
+		<div class="row">   
+       		<div class="col-xs-12">
+       			<div class="col-xs-12 col-sm-12">
+    				<p style="padding:10px;"></p>
+    			</div>
+				<ol class="breadcrumb">
+		        	<li><a href="{{ path('index') }}">inicio</a></li>
+		        	<li><a href="{{ path('incidencia') }}">incidencia</a></li>
+		            <li>show</li>
+		       	</ol>
+		    </div>
+		</div>
+		<h2>Incidencia: {{ incidencia.id }}</h2>
+		<hr>
+		<a href="{{ path('incidencia') }}"><button type="button" class="btn btn-default">Atras</button></a>	
+		<hr>
+		<table class="table">
+			<tbody>
+				<tr><th>Cliente</th><td>{{ incidencia.cliente.name }}&nbsp;{{ incidencia.cliente.surname }}</td></tr>
+				<tr><th>Incidencia creada por</th><td>{{ incidencia.helpdesk.id }}</td></tr>
+				{% if incidencia.tecnico | default("") %}
+					<tr><th>Técnico asignado</th><td>{{ incidencia.tecnico.id }}</td></tr>
+					{% else %}
+						<tr><th>Técnico asignado</th><td>No asignado</td></tr>
+				{% endif %}
+				<tr><th>Estado</th><td>{{ incidencia.estado.estado }}</td></tr>
+				<tr><th>Alta</th><td>{{ incidencia.fechaalta.fecha|date('d/m/Y') }}</td></tr>
+				{% if incidencia.fechacierre.fecha | default("") %}
+					<tr><th>Cierre</th><td>{{ incidencia.fechacierre.fecha|date('d/m/Y') }}</td></tr>
+					{% else %}
+						<tr><th>Cierre</th><td>En curso</td></tr>
+				{% endif %}
+				<tr><th>Componente</th><td>{{ incidencia.componente }}</td></tr>
+				<tr><th>Observaciones</th><td>{{ incidencia.observaciones }}</td></tr>	
+				
+		</table>
+		<hr>
+	</div>
+{% endblock %}
+{% block javascripts %}{% endblock %}

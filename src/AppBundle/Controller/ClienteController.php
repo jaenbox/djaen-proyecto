@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Cliente;
 use AppBundle\Entity\Administrador;
 use Symfony\Component\Validator\Constraints\True;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 
 class ClienteController extends Controller {

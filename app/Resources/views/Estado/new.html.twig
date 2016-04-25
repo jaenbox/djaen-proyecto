@@ -1,0 +1,39 @@
+{# app/Resources/views/Estado/new.html.twig #}
+
+{% extends 'base.html.twig' %}
+{% trans_default_domain 'AppBundle' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
+{% block title %}Estado-incidencia{% endblock %}
+
+{% block body %}
+	<div class="container contenedor">
+		<div class="row">   
+       		<div class="col-xs-12">
+       			<div class="col-xs-12 col-sm-12">
+    				<p style="padding:10px;"></p>
+    			</div>
+				<ol class="breadcrumb">
+		        	<li><a href="{{ path('index') }}">inicio</a></li>
+		            <li>new</li>
+		       	</ol>
+		    </div>
+		</div>
+		<a href="{{ path('incidencia') }}"><button type="button" class="btn btn-default">Atrás</button></a>
+		<hr>
+		<h2>Nuevo Estado</h2>
+		<div class="row">
+			<div class="col-sm-8">				
+				{{ form_start(form) }}		
+				{{ form_widget(form) }}		
+				{{ form_end(form) }}
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12">
+    		<p style="padding:40px;"></p>
+    	</div>
+	</div>
+{% endblock %}

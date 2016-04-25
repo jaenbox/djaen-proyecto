@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -18,7 +19,7 @@ class Fecha_alta extends Fecha {
 
 	// Relación de "Fecha_alta --- Incidencias" 1:N.
 	/**
-	 * @ORM\OneToMany(targetEntity="Incidencia", mappedBy="fecha_alta")
+	 * @ORM\OneToMany(targetEntity="Incidencia", mappedBy="fecha_alta", cascade={"persist"})
 	 */
 	protected $incidencias;
 	

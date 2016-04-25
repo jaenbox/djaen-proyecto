@@ -101,3 +101,15 @@ listIncidencia:
 showIncidencia:
   path: /incidencia/show/{id}
   defaults: { _controller: AppBundle:Incidencia:show }
+
+newEstado:
+  path: /estado/new
+  defaults: { _controller: AppBundle:Estado:new }
+
+editEstado:
+  path: /estado/edit/{id}
+  defaults: { _controller: AppBundle:Estado:edit }
+
+deleteEstado:
+  path: /estado/delete/{id}
+  defaults: { _controller: AppBundle:Estado:delete }

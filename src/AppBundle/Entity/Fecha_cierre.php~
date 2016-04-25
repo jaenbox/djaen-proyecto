@@ -18,7 +18,7 @@ class Fecha_cierre extends Fecha {
 	
 	// Relación de "Fecha_cierre --- Incidencias" 1:N.
 	/**
-	 * @ORM\OneToMany(targetEntity="Incidencia", mappedBy="fecha_cierre")
+	 * @ORM\OneToMany(targetEntity="Incidencia", mappedBy="fecha_cierre", cascade={"persist"})
 	 */
 	protected $incidencias;
 	

@@ -19,8 +19,8 @@ use Doctrine\ORM\Mapping\Entity;
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({
- * 		"fechaalta" = "Fecha_alta",
- * 		"fechacierre" = "Fecha_cierre"
+ * 		"fecha_alta" = "Fecha_alta",
+ * 		"fecha_cierre" = "Fecha_cierre"
  * })
  *
  */
@@ -56,7 +56,7 @@ class Fecha {
      * @param \DateTime $fecha
      * @return Fecha
      */
-    public function setFecha($fecha)
+    public function setFecha(\DateTime $fecha)
     {
         $this->fecha = $fecha;
 

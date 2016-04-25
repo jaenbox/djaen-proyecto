@@ -29,7 +29,7 @@ class Incidencia {
 	 */
 	protected $componente;
 	/**
-	 * @ORM\Column(type="string", length=100)
+	 * @ORM\Column(type="string", length=1000)
 	 * @Assert\NotBlank()
 	 *
 	 */
@@ -72,17 +72,17 @@ class Incidencia {
 	
 	// Relación de "Incidencia --- Fecha_alta" N:1.
 	/**
-	 * @ORM\ManyToOne(targetEntity="Fecha_alta", inversedBy="incidencias")
-	 * @ORM\JoinColumn(name="fecha_alta_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="Fecha_alta", inversedBy="incidencias", cascade={"persist"})
+	 * @ORM\JoinColumn(name="fechaAlta_id", referencedColumnName="id", nullable = true)
 	 */
-	protected $fecha_alta;
+	protected $fechaAlta;
 	
 	// Relación de "Incidencia --- Fecha_cierre" N:1.
 	/**
-	 * @ORM\ManyToOne(targetEntity="Fecha_cierre", inversedBy="incidencias")
-	 * @ORM\JoinColumn(name="fecha_cierre_id", referencedColumnName="id")
+	 * @ORM\ManyToOne(targetEntity="Fecha_cierre", inversedBy="incidencias", cascade={"persist"})
+	 * @ORM\JoinColumn(name="fechaCierre_id", referencedColumnName="id", nullable = true)
 	 */
-	protected $fecha_cierre;
+	protected $fechaCierre;
 
     /**
      * Get id
@@ -263,7 +263,7 @@ class Incidencia {
      */
     public function setFechaAlta(\AppBundle\Entity\Fecha_alta $fechaAlta = null)
     {
-        $this->fecha_alta = $fechaAlta;
+        $this->fechaAlta = $fechaAlta;
 
         return $this;
     }
@@ -271,22 +271,22 @@ class Incidencia {
     /**
      * Get fecha_alta
      *
-     * @return \AppBundle\Entity\Fecha_alta 
+     * @return \AppBundle\Entity\FechaAlta 
      */
     public function getFechaAlta()
     {
-        return $this->fecha_alta;
+        return $this->fechaAlta;
     }
 
     /**
      * Set fecha_cierre
      *
-     * @param \AppBundle\Entity\Fecha_cierre $fechaCierre
+     * @param \AppBundle\Entity\FechaCierre $fechaCierre
      * @return Incidencia
      */
     public function setFechaCierre(\AppBundle\Entity\Fecha_cierre $fechaCierre = null)
     {
-        $this->fecha_cierre = $fechaCierre;
+        $this->fechaCierre = $fechaCierre;
 
         return $this;
     }
@@ -294,10 +294,10 @@ class Incidencia {
     /**
      * Get fecha_cierre
      *
-     * @return \AppBundle\Entity\Fecha_cierre 
+     * @return \AppBundle\Entity\FechaCierre 
      */
     public function getFechaCierre()
     {
-        return $this->fecha_cierre;
+        return $this->fechaCierre;
     }
 }
