@@ -27,30 +27,50 @@
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
-    <body data-spy="scroll" data-target="#myScrollspy" data-offset-top="30">
+    <body>
     	<!-- Navbar -->
     	<div class="navbar-wrapper">
     		<div class="navbar-container">
-				<div class= "navbar navbar-inverse navbar-fixed-top menu" role="navigation">
-					<div class="navbar-header">
-		            	
-	            	</div>
+				<div class= "navbar navbar-inverse navbar-static-top container" role="navigation">
 					<div class="navbar-header">
 						<!-- Button for smallest screens -->
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-						<a class="navbar-brand" href="#">
+						<a class="navbar-brand" href="{{ path('index') }}">
 							<p>PC-Reparaciones</p>
 						</a>
 					</div>
 					<div class="navbar-collapse collapse">
-						<ul class="nav navbar-nav pull-right">
+						<ul class="nav navbar-nav navbar-right">
 							<li><a href="{{ path('index') }}">Inicio</a></li>
 							<li><a href="{{ path('contact') }}">Contacto</a></li>
-							<li><a href="{{ path('incidencia') }}">Incidencia</a>
-							<li><a href="{{ path('user') }}">Usuarios</a>
-							<li><a href="#">Registrate</a></li>
-							<li><a class="btn btn-rounded" href="#">Iniciar sesión</a></li>
-							<!-- Botón Idioma-->
+							<li><a href="{{ path('incidencia') }}">Incidencia</a></li>
+							{#% if is_granted('ROLE_ADMIN') %#}
+								<li><a href="{{ path('user') }}">Usuarios</a></li>
+							{#% endif %#}
+							{% if is_granted('IS_AUTHENTICATED_FULLY')%}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="glyphicon glyphicon glyphicon-user"></span> {{ app.user.username }}<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{{ path('fos_user_profile_edit') }}">Editar</a></li>
+                                        <li><a href="{{ path('fos_user_change_password') }}">Cambiar contraseña</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a class="glyphicon glyphicon-log-out" href="{{ path('fos_user_security_logout') }}">Salir</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                            	<li>
+                                	<a data-toggle="modal" data-target="#loginModal"><span class="glyphicon glyphicon-log-in"></span>Acceder</a>
+                                </li>
+                            {% endif %}                            	
+                        	<li>
+                        	{% if is_granted('IS_AUTHENTICATED_FULLY')%}
+            					<!-- No mostramos el boton de acceder.-->
+                    		{% else %}
+                    			<a href="{{ path('fos_user_registration_register') }}"><span class="glyphicon glyphicon-plus"></span>Registrarse</a>
+                    		{% endif %}
+                        	</li>
+	                        <!-- Botón Idioma-->
 	                        <li class="dropdown">
 	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
 	                            role="button" aria-haspopup="true" aria-expanded="false">
@@ -64,11 +84,127 @@
 					</div>
 				</div>
 			</div>
-		</div>		
+		</div>
+		<!-- Login modal-->
+        <div id="loginModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+               	<!-- Modal content-->
+               	<div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Acceso</h4>                        
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline" action="{{ path('fos_user_security_check') }}" method="post" >                    
+						
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                        
+                            <div class="form-group">
+                                <label for="username" class="sr-only">Usuario</label>
+    							<input type="text" id="username" name="_username" required="required" 
+    								placeholder="Usuario o Correo" class="form-control input-sm"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="sr-only">Contraseña</label>
+    							<input type="password" id="password" name="_password" required="required"
+    									 placeholder="Contraseña" class="form-control input-sm" />
+                            </div>
+                            <div class="checkbox">
+                                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+    							<label for="remember_me">Recordar</label>
+                            </div>
+                            <input type="submit" id="_submit" name="_submit"
+                                   value="Enviar" class="btn btn-info btn-sm" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>	
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% endblock %}
+        <footer>
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="footer-inner">
+                        <div class="row">
+                                <div class="col-sm-6 col-md-3 col-lg-2 col-lg-offset-1">
+                                    <div class="footer-content">
+                                        <h2 class="title">Find Us</h2>
+                                        <ul class="list-icons">
+                                            <li><i class="fa fa-map-marker pr-10 text-default"></i> One infinity loop, 54100</li>
+                                            <li><i class="fa fa-phone pr-10 text-default"></i> +00 1234567890</li>
+                                            <li><a href="mailto:info@theproject.com"><i class="fa fa-envelope-o pr-10"></i>info@theproject.com</a></li>
+                                        </ul>
+                                        <a class="collapsed map-show btn-lg-link padding-hor-clear" data-toggle="collapse" href="#collapseMap" aria-expanded="false" aria-controls="collapseMap"><i class="fa fa-map pr-20"></i>Show Map</a>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3 col-lg-2 col-lg-offset-1">
+                                    <div class="footer-content">
+                                        <h2 class="title">Follow Us</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                                        <ul class="social-links circle animated-effect-1">
+                                            <li class="facebook"><a target="_blank" href="http://www.facebook.com"><i class="fa fa-facebook"></i></a></li>
+                                            <li class="twitter"><a target="_blank" href="http://www.twitter.com"><i class="fa fa-twitter"></i></a></li>
+                                            <li class="googleplus"><a target="_blank" href="http://plus.google.com"><i class="fa fa-google-plus"></i></a></li>
+                                            <li class="linkedin"><a target="_blank" href="http://www.linkedin.com"><i class="fa fa-linkedin"></i></a></li>
+                                            <li class="xing"><a target="_blank" href="http://www.xing.com"><i class="fa fa-xing"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="clearfix visible-sm"></div>
+                                <div class="col-md-6 col-lg-4 col-lg-offset-1">
+                                    <div class="footer-content">
+                                        <h2 class="title">Contact Us</h2>
+                                        <div class="alert alert-success hidden" id="MessageSent2">
+                                            We have received your message, we will contact you very soon.
+                                        </div>
+                                        <div class="alert alert-danger hidden" id="MessageNotSent2">
+                                            Oops! Something went wrong please refresh the page and try again.
+                                        </div>
+                                        <form role="form" id="footer-form" class="margin-clear">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group has-feedback mb-10">
+                                                        <label class="sr-only" for="name2">Name</label>
+                                                        <input type="text" class="form-control" id="name2" placeholder="Name" name="name2">
+                                                        <i class="fa fa-user form-control-feedback"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group has-feedback mb-10">
+                                                        <label class="sr-only" for="email2">Email address</label>
+                                                        <input type="email" class="form-control" id="email2" placeholder="Enter email" name="email2">
+                                                        <i class="fa fa-envelope form-control-feedback"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group has-feedback mb-10">
+                                                <label class="sr-only" for="message2">Message</label>
+                                                <textarea class="form-control" rows="4" id="message2" placeholder="Message" name="message2"></textarea>
+                                                <i class="fa fa-pencil form-control-feedback"></i>
+                                            </div>
+                                            <input type="submit" value="Send" class="margin-clear submit-button radius-50 btn btn-default">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="subfooter">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="texto-centrado">Copyright © 2016 Proyecto CFGS David Jaén Revert - CEEDCV</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

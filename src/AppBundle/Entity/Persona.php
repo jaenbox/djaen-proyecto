@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  *
@@ -78,7 +79,18 @@ class Persona {
 	 *
 	 */
 	protected $address;
-	
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 * @Assert\NotBlank()
+	 * 
+	 */
+	protected $password;
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 * @Assert\NotBlank()
+	 * 
+	 */
+	protected $role;
 
     /**
      * Get id
@@ -228,4 +240,50 @@ class Persona {
         return $this->address;
     }
     
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return Persona
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     * @return Persona
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 }

@@ -24,16 +24,19 @@ class AdministradorController extends Controller {
 
 		// Objeto administrador
 		$admin = new Administrador();
+		$admin->setRole('ROLE_ADMIN');
 		
 		// Creamos el formulario
 		$form = $this->createFormBuilder($admin)
 		->add('name', 'text', ['label' => 'Nombre'])
 		->add('surname', 'text', ['label' => 'Apellidos'])
+		->add('password', 'text', array(
+           'label' => 'Password'
+        ))
 		->add('dni', 'text', ['label' => 'DNI'])
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
 		->add('address', 'text', ['label' => 'Dirección'])
-
 		->add('save', 'submit', array('label' => 'Guardar'))
 		->getForm();
 
