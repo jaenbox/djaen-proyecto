@@ -11,11 +11,11 @@
 	   			<img class="" src="{{ asset_url }}" alt="portada"/>
 			{% endimage %}
 	</div>
-	<section class="section section-1">
+	<section id="about" class="section section-1">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<h2 class="texto-centrado">About</h2>
+					<h2 class="texto-centrado">Nosotros</h2>
 					<hr>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 			</div>			
 		</div>
 	</section>
-	<section class="section section-2">
+	<section id="services" class="section section-2">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
@@ -39,27 +39,73 @@
 			</div>			
 		</div>
 		<div class="row row-content">
-	        <div class="col-xs-12 col-sm-4 col-lg-4">
+	        <div class="col-xs-12 col-sm-3 col-lg-2 col-sm-offset-1 col-lg-offset-1">
 	      		<i class="fa fa-4x fa-diamond icono-centrado"></i>
 		        <h2 class="texto-centrado">Venta</h2>
 		        <p class="texto-centrado">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta)</p>   
 	        </div>
-	        <div class="col-xs-12 col-sm-4 col-lg-4">
+	        <div class="col-xs-12 col-sm-3 col-lg-2 col-sm-offset-2 col-lg-offset-2">
 	          	<i class="fa fa-4x fa-paper-plane icono-centrado"></i>
 	          	<h2 class="texto-centrado">Reparación</h2>
 	          	<p class="texto-centrado">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta)</p>
 	        </div>
-	        <div class="col-xs-12 col-sm-4 col-lg-4">
+	        <div class="col-xs-12 col-sm-3 col-lg-2 col-sm-offset-1 col-lg-offset-2">
 	          	<i class="fa fa-4x  fa-mortar-board icono-centrado"></i>
 	          	<h2 class="texto-centrado">Cursos</h2>
 	          	<p class="texto-centrado">Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta)</p>	          	
 	        </div>
 	    </div>
 	</section>
-	<section class="section section-3">
-		<div class="container">
-			<div class="row">
-			</div>			
-		</div>
-	</section>
+    <section id="job" class="section-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 texto-centrado">
+                    <h2>Nuestro Trabajo</h2>
+                    <hr>
+                    <div class="row">
+                    	<div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="#">
+                                    {% image '@AppBundle/Resources/public/images/portafolio1.jpeg' %}
+	   									<img class="img-portfolio img-responsive" src="{{ asset_url }}" alt="portafolio1"/>
+									{% endimage %}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="#">
+                                    {% image '@AppBundle/Resources/public/images/portafolio5.jpeg' %}
+	   									<img class="img-portfolio img-responsive" src="{{ asset_url }}" alt="portafolio5"/>
+									{% endimage %}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="#">
+                                    {% image '@AppBundle/Resources/public/images/portafolio3.jpeg' %}
+	   									<img class="img-portfolio img-responsive" src="{{ asset_url }}" alt="portafolio3"/>
+									{% endimage %}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="portfolio-item">
+                                <a href="#">
+                                    {% image '@AppBundle/Resources/public/images/portafolio6.jpeg' %}
+	   									<img class="img-portfolio img-responsive" src="{{ asset_url }}" alt="portafolio6"/>
+									{% endimage %}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+            </div>
+        </div>
+    </section>
+    <section id="contact" class="mapa texto-centrado">                   
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d549.4745656397788!2d-0.6032259020546605!3d38.82564630837987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1462471204508"  width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+        </iframe>        	
+    </section>
 {% endblock %}

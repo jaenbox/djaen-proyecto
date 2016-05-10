@@ -61,7 +61,7 @@
 												)
 												}}">
 												{{ cliente.id }}</a></td>						
-											<td>{{ cliente.name }}</td>
+											<td>{{ cliente.username }}</td>
 											<td>{{ cliente.surname }}</td>
 											<td>{{ cliente.phone }}</td>
 											<td>{{ cliente.email }}</td>							
@@ -110,7 +110,7 @@
 												)
 												}}">
 												{{ helpdesk.id }}</a></td>						
-											<td>{{ helpdesk.name }}</td>
+											<td>{{ helpdesk.username }}</td>
 											<td>{{ helpdesk.surname }}</td>
 											<td>{{ helpdesk.phone }}</td>
 											<td>{{ helpdesk.email }}</td>										
@@ -157,7 +157,7 @@
 												)
 												}}">
 												{{ tecnico.id }}</a></td>						
-											<td>{{ tecnico.name }}</td>
+											<td>{{ tecnico.username }}</td>
 											<td>{{ tecnico.surname }}</td>
 											<td>{{ tecnico.phone }}</td>
 											<td>{{ tecnico.email }}</td>										
@@ -205,7 +205,7 @@
 												)
 												}}">
 												{{ admin.id }}</a></td>						
-											<td>{{ admin.name }}</td>
+											<td>{{ admin.username }}</td>
 											<td>{{ admin.surname }}</td>
 											<td>{{ admin.phone }}</td>
 											<td>{{ admin.email }}</td>							
@@ -227,6 +227,47 @@
 							</tbody>
 						</table>
         			</div>
+        			{# <div id="sectionE" class="tab-pane fade">
+        				<h2>Roles</h2>
+        				<a href="{{ path('newRole') }}"><button type="button" class="btn btn-default">Nuevo</button></a>	
+						<hr>	
+						<table class="table table-striped">
+							<tbody>
+								<thead>
+									<tr>
+										<td>Id</td>
+										<td>Nombre</td>
+										<td>Role</td>										
+									</tr>
+								</thead>
+									{% for role in roles%}
+										<tr>
+											<td><a href="{{
+												path(
+													'showRole',
+													{ 'id': role.id }
+												)
+												}}">
+												{{ role.id }}</a></td>						
+											<td>{{ role.nombre }}</td>
+											<td>{{ role.role }}</td>									
+											<td><a href="{{
+												path(
+													'editRole',
+													{ 'id': role.id }
+												) 
+												}}"><i class="fa fa-pencil-square-o"></i></a></td>
+											<td><a href="{{
+												path(
+													'deleteRole',
+													{ 'id': role.id }
+												) 
+												}}"><i class="fa fa-trash fa-lg"></i></a></td>											
+										</tr>
+									{% endfor %} 
+							</tbody>
+						</table>
+        			</div> #}
         		</div>
 				<hr>			
 			</div>

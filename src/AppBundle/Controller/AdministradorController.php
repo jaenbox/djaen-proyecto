@@ -3,6 +3,8 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 use AppBundle\Entity\Administrador;
 
@@ -24,19 +26,27 @@ class AdministradorController extends Controller {
 
 		// Objeto administrador
 		$admin = new Administrador();
-		$admin->setRole('ROLE_ADMIN');
+		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('1');
+		
+		$admin->setIsActive(True);
+		$cadena_salt = md5(uniqid(null, true));
+		$admin->setSalt($cadena_salt);
+		$admin->addRole($rol);
 		
 		// Creamos el formulario
 		$form = $this->createFormBuilder($admin)
-		->add('name', 'text', ['label' => 'Nombre'])
+		->add('username', 'text', ['label' => 'Nombre'])
 		->add('surname', 'text', ['label' => 'Apellidos'])
-		->add('password', 'text', array(
-           'label' => 'Password'
-        ))
+		->add('password', RepeatedType::class, array(
+				'type' => PasswordType::class,
+				'first_options'  => array('label' => 'Password'),
+				'second_options' => array('label' => 'Repetir Password'),
+		))
 		->add('dni', 'text', ['label' => 'DNI'])
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
 		->add('address', 'text', ['label' => 'Dirección'])
+		
 		->add('save', 'submit', array('label' => 'Guardar'))
 		->getForm();
 
@@ -45,6 +55,11 @@ class AdministradorController extends Controller {
 			$form->handlerequest($request);
 
 			if($form->isValid()) {
+				// Codificamos el password.
+				$password = $this->get('security.password_encoder')
+				->encodePassword($admin, $admin->getPassword());
+				$admin->setPassword($password);
+				
 				// Se almacena en la base de datos.
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($admin);	// Persistimos
@@ -67,14 +82,25 @@ class AdministradorController extends Controller {
 		
 		// Objeto Administrador
 		$admin = new Administrador();
+		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('1');
+		
+		$admin->setIsActive(True);
+		$cadena_salt = md5(uniqid(null, true));
+		$admin->setSalt($cadena_salt);
+		$admin->addRole($rol);
 		
 		$em = $this->getDoctrine()->getManager();
 		$admin = $em->getRepository('AppBundle:Administrador')->find($id);
 		
 		// Creamos el formulario
 		$form = $this->createFormBuilder($admin)
-		->add('name', 'text', ['label' => 'Nombre'])
+		->add('username', 'text', ['label' => 'Nombre'])
 		->add('surname', 'text', ['label' => 'Apellidos'])
+		->add('password', RepeatedType::class, array(
+				'type' => PasswordType::class,
+				'first_options'  => array('label' => 'Password'),
+				'second_options' => array('label' => 'Repetir Password'),
+		))
 		->add('dni', 'text', ['label' => 'DNI'])
 		->add('phone', 'integer', ['label' => 'Teléfono'])
 		->add('email', 'text', ['label' => 'Email'])
@@ -89,6 +115,11 @@ class AdministradorController extends Controller {
 			$form->handlerequest($request);
 		
 			if($form->isValid()) {
+				// Codificamos el password.
+				$password = $this->get('security.password_encoder')
+				->encodePassword($admin, $admin->getPassword());
+				$admin->setPassword($password);
+				
 				// Se almacena en la base de datos.
 				$em = $this->getDoctrine()->getManager();
 				$em->persist($admin);	// Persistimos

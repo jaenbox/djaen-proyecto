@@ -1,19 +1,36 @@
-{% if error %}
-    <div>{{ error.message }}</div>
-{% endif %}
+{% stylesheets 'bundles/framework/css/login.css' filter='cssrewrite' %}    
+	<link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}
 
-<form action="{{ path('login_check') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+{% trans_default_domain 'AppBundle' %}
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
-
-    {#
-        Si deseas controlar la URL a la que rediriges al
-        usuario en caso de éxito (más detalles abajo)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
-
-    <button type="submit">login</button>
-</form>
+{% block body %}
+	{% if error %}
+		<label>Esto es un error melon!!!</label>
+	    <div>{{ error.message }}</div>
+	{% endif %}
+	
+	<body>
+		<div class="login">
+			<div class="login-screen">
+				<div class="app-title">
+					<h1>Login</h1>
+				</div>
+				<div class="login-form">
+					<form action="{{ path('login_check') }}" method="post">
+						<div class="control-group">	
+							<label for="username">Username:</label>
+			    			<input type="text" id="username" name="_username" value="{{ last_username }}" />
+			    		</div>	
+			    		<div class="control-group">	
+			    			<label for="password">Password:</label>
+			    			<input type="password" id="password" name="_password" />
+			    		</div>		    		
+			    		<button class="btn btn-primary btn-large btn-block" type="submit">login</button>
+			    	</form>			
+				</div>
+			</div>
+		</div>
+	</body>
+	
+{% endblock %}

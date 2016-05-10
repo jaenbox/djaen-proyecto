@@ -9,14 +9,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  *
  * @author jaen
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\PersonaRepository")
  * @ORM\Table(name="persona")
+ * @UniqueEntity(fields="email", message="Email already taken")
+ * @UniqueEntity(fields="username", message="Username already taken")
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({
@@ -28,7 +32,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * })
  *
  */
-class Persona {
+class Persona implements AdvancedUserInterface, \Serializable {
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
@@ -37,11 +41,11 @@ class Persona {
 	 */
 	protected $id;
 	/**
-	 * @ORM\Column(type="string", length=100)
+	 * @ORM\Column(type="string", length=100, unique=true)
 	 * @Assert\NotBlank()
 	 *
 	 */
-	protected $name;
+	protected $username;
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 * @Assert\NotBlank()
@@ -65,7 +69,7 @@ class Persona {
 	protected $phone;
 	/**
 	 *
-	 * @ORM\Column(type="string")
+	 * @ORM\Column(type="string", length=60, unique=true)
 	 * @Assert\NotBlank(message="val.notblank")
 	 * @Assert\Email(
 	 * 		message = "val.email",
@@ -86,11 +90,26 @@ class Persona {
 	 */
 	protected $password;
 	/**
-	 * @ORM\Column(type="string", length=100)
-	 * @Assert\NotBlank()
-	 * 
+	 * @ORM\Column(name="is_active", type="boolean")
 	 */
-	protected $role;
+	protected $isActive;
+	/**
+	 * @ORM\Column(name="salt", type="string", length=32)
+	 */
+	protected $salt;
+	
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Roles", inversedBy="persona")
+     *
+     */
+    private $roles;
+    
+    public function __construct()
+    {
+    	$this->roles = new ArrayCollection();
+    }
+    
 
     /**
      * Get id
@@ -103,26 +122,26 @@ class Persona {
     }
 
     /**
-     * Set name
+     * Set username
      *
-     * @param string $name
+     * @param string $username
      * @return Persona
      */
-    public function setName($name)
+    public function setUsername($username)
     {
-        $this->name = $name;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get username
      *
      * @return string 
      */
-    public function getName()
+    public function getUsername()
     {
-        return $this->name;
+        return $this->username;
     }
 
     /**
@@ -239,7 +258,6 @@ class Persona {
     {
         return $this->address;
     }
-    
 
     /**
      * Set password
@@ -265,25 +283,134 @@ class Persona {
     }
 
     /**
-     * Set role
+     * Set isActive
      *
-     * @param string $role
+     * @param boolean $isActive
      * @return Persona
      */
-    public function setRole($role)
+    public function setIsActive($isActive)
     {
-        $this->role = $role;
+        $this->isActive = $isActive;
 
         return $this;
     }
 
     /**
-     * Get role
+     * Get isActive
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     * @return Persona
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get salt
      *
      * @return string 
      */
-    public function getRole()
+    public function getSalt()
     {
-        return $this->role;
+        return $this->salt;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+    }
+    
+    /**
+     * @see \Serializable::serialize()
+     */
+    public function serialize()
+    {
+    	return serialize(array(
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    			$this->isActive,
+    			$this->salt
+    	));
+    }
+    
+    /**
+     * @see \Serializable::unserialize()
+     */
+    public function unserialize($serialized)
+    {
+    	list (
+    			$this->id,
+    			$this->username,
+    			$this->password,
+    			$this->isActive,
+    			$this->salt
+    			) = unserialize($serialized);
+    }
+    /**
+     * Add roles
+     *
+     * @param \AppBundle\Entity\Roles $roles
+     * @return Persona
+     */
+    public function addRole(\AppBundle\Entity\Roles $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \AppBundle\Entity\Roles $roles
+     */
+    public function removeRole(\AppBundle\Entity\Roles $roles)
+    {
+        $this->roles->removeElement($roles);
+    }
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getRoles()
+    {
+        return $this->roles->toArray();
+    }
+    public function isAccountNonExpired()
+    {
+    	return true;
+    }
+    
+    public function isAccountNonLocked()
+    {
+    	return true;
+    }
+    
+    public function isCredentialsNonExpired()
+    {
+    	return true;
+    }
+    
+    public function isEnabled()
+    {
+    	return $this->isActive;
+    }
+    
 }

@@ -21,14 +21,14 @@
 		       	</ol>
 		    </div>
 		</div>
-		<h2>Tecnico: {{ tecnico.name }}</h2>
+		<h2>Tecnico: {{ tecnico.username }}</h2>
 		<hr>
 		<a href="{{ path('user') }}"><button type="button" class="btn btn-default">Atras</button></a>	
 		<hr>
 		<table class="table">
 			<tbody>
 					<tr><th><i class="fa fa-user fa-2x"></th><td>{{ tecnico.id }}</td></tr>
-					<tr><th>Nombre</th><td>{{ tecnico.name }}</td></tr>
+					<tr><th>Nombre</th><td>{{ tecnico.username }}</td></tr>
 					<tr><th>Apellidos</th><td>{{ tecnico.surname }}</td></tr>
 					<tr><th>DNI</th><td>{{ tecnico.dni }}</td></tr>
 					<tr><th><i class="fa fa-at fa-2x"></th><td>{{ tecnico.email }}</td></tr>
@@ -39,7 +39,7 @@
 													{% else %}
 														Hardware</td></tr>	
 													{% endif %}
-					<tr><th>Administrador</th><td>{{ tecnico.administrador.name }}</td></tr>
+					<tr><th>Administrador</th><td>{{ tecnico.administrador.username }}</td></tr>
 		</table> 
 		<hr>
 	</div>

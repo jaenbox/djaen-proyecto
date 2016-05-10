@@ -1,37 +1,51 @@
 # app/config/security.yml
 security:
     encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+        AppBundle\Entity\Persona:
+          algorithm:  bcrypt
+          cost: 12
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_USER ]
 
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        db_provider:
+          entity: 
+            class: AppBundle:Persona
 
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         main:
             pattern: ^/
-            anonymous: ~            
+            provider: db_provider         
             form_login:
-                provider: fos_userbundle
-                csrf_provider: form.csrf_provider
-
-            logout:       true
-            anonymous:    true
+              login_path: /login
+              check_path: /login_check
+              default_target_path: 'index'
+              always_use_default_target_path: true
+              use_referer: true
+              failure_path: 'index'
+            logout:
+              path: /logout
+              target: 'index'
+            security: true
+            anonymous: true
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/index, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/contact, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/newAdministrador, role: ROLE_ADMIN }
         - { path: ^/editAdministrador, role: ROLE_ADMIN }
         - { path: ^/deleteAdministrador, role: ROLE_ADMIN }
         - { path: ^/showAdministrador, role: ROLE_ADMIN }
+        #- { path: ^/user, role: ROLE_ADMIN }
+        - { path: ^/newCliente, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/editCliente, role: ROLE_ADMIN }
+        - { path: ^/deleteCliente, role: ROLE_ADMIN }
+        - { path: ^/showCliente, role: ROLE_ADMIN }
         - { path: ^/newHelpDesk, role: ROLE_ADMIN }
         - { path: ^/editHelpDesk, role: ROLE_ADMIN }
         - { path: ^/deleteHelpDesk, role: ROLE_ADMIN }
@@ -49,4 +63,3 @@ security:
         - { path: ^/newEstado, role: ROLE_ADMIN }
         - { path: ^/editEstado, role: ROLE_ADMIN }
         - { path: ^/deleteEstado, role: ROLE_ADMIN }
-        #- { path: ^/user, role: ROLE_ADMIN }

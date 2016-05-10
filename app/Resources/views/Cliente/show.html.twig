@@ -21,20 +21,20 @@
 		       	</ol>
 		    </div>
 		</div>
-		<h2>Cliente: {{ cliente.name }}</h2>
+		<h2>Cliente: {{ cliente.username }}</h2>
 		<hr>
 		<a href="{{ path('user') }}"><button type="button" class="btn btn-default">Atras</button></a>	
 		<hr>
 		<table class="table">
 			<tbody>
 				<tr><th><i class="fa fa-user fa-2x"></th><td>{{ cliente.id }}</td></tr>
-				<tr><th>Nombre</th><td>{{ cliente.name }}</td></tr>
+				<tr><th>Nombre</th><td>{{ cliente.username }}</td></tr>
 				<tr><th>Apellidos</th><td>{{ cliente.surname }}</td></tr>
 				<tr><th>DNI</th><td>{{ cliente.dni }}</td></tr>
 				<tr><th><i class="fa fa-at fa-2x"></th><td>{{ cliente.email }}</td></tr>
 				<tr><th><i class="fa fa-phone-square fa-2x"></th><td>{{ cliente.phone }}</td></tr>					
 				<tr><th>Dirección</th><td>{{ cliente.address }}</td></tr>
-				<tr><th>Administrador</th><td>{{ cliente.administrador.name }}</td></tr>
+				<tr><th>Administrador</th><td>{{ cliente.administrador.username }}</td></tr>
 			</tbody>
 		</table> 
 		<hr>
