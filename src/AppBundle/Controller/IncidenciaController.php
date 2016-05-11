@@ -17,18 +17,69 @@ use AppBundle\Entity\HelpDesk;
 class IncidenciaController extends Controller {
 	
 	public function defaultAction(Request $request) {
+		$repository = '';
+		$incidencias = '';
+		$estados = '';
+		$array = array();
+		
 		// Recogemos el repositorio
 		$repository = $this->getDoctrine() ->getRepository('AppBundle:Incidencia');
-		// recuperamos todos los recintos existentes
-		$incidencias = $repository->findAll();	
-		
+		// recuperamos todos las incidencias existentes
+		$incidencias = $repository->findAll();
 		// Recogemos el repositorio
 		$repository = $this->getDoctrine() ->getRepository('AppBundle:Estado');
 		// recuperamos todos los recintos existentes
 		$estados = $repository->findAll();
 		
-		// Se muestra la plantilla por defecto con el listado de incidencias.
-		return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $incidencias, 'estados' => $estados)); 
+		// Se recoge el usuario y su rol.
+		$user = $this->get('security.context')->getToken()->getUser();
+		$roles = $user->getRoles();
+		
+		// Id del usuario cliente, helpdesk, admin, tecnico.
+		$idUser = (string)$user->getId();
+		
+		foreach($roles as $ad) {
+			// Rol del usuario 'string' 
+			$rol = (string)$ad->getRole();
+		}
+				
+		if($rol == 'ROLE_USER') {
+			
+			foreach($incidencias as $in) {
+				// Si coincide la incidencia con el cliente se almacena en el array.
+				if($in->getCliente()->getId() == $idUser) {
+					$array[] = $in;
+				}
+			}
+			
+			// Se muestra la plantilla por defecto con el listado de incidencias.
+			return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $array, 'estados' => $estados, 'user' => $user, 'roles' => $roles));
+			
+		} elseif($rol == 'ROLE_HELP') {
+			
+			foreach($incidencias as $in) {
+				// Si coincide la incidencia con el helpdesk se almacena en el array.
+				if($in->getHelpdesk()->getId() == $idUser) {
+					$array[] = $in;
+				}
+			}
+			// Se muestra la plantilla por defecto con el listado de incidencias.
+			return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $array, 'estados' => $estados, 'user' => $user, 'roles' => $roles));
+			
+		} elseif($rol == 'ROLE_TEC') {
+			
+			foreach($incidencias as $in) {
+				// Si coincide la incidencia con el tecnico se almacena en el array.
+				if($in->getTecnico()->getId() == $idUser) {
+					$array[] = $in;
+				}
+			}
+			// Se muestra la plantilla por defecto con el listado de incidencias.
+			return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $array, 'estados' => $estados, 'user' => $user, 'roles' => $roles));
+		}
+
+		// Se muestra la plantilla por defecto con el listado de incidencias para el ROLE_SUPER_ADMIN
+		return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $incidencias, 'estados' => $estados, 'user' => $user, 'roles' => $roles));	
 		
 	}
 	
@@ -36,6 +87,9 @@ class IncidenciaController extends Controller {
 		$logger = $this->get('logger');
 		$logger->info(' ============= FECHA =======================');
 		$logger->info(strftime( "%Y/%m/%d", time() ));
+		
+		// Se recoge el usuario
+		$user = $this->get('security.context')->getToken()->getUser();
 		
 		// Objeto usuario
 		$incidencia = new Incidencia();
@@ -49,32 +103,34 @@ class IncidenciaController extends Controller {
 		$incidencia->setHelpdesk($hd);
 		$incidencia->setEstado($estado); // Por defecto estado en "espera"
 		$incidencia->setFechaAlta($fecha); // Fecha de la máquina
+		$incidencia->setCliente($user);	// Usuario que crea la incidencia.
 		
 		// Creamos el formulario
 		$form = $this->createFormBuilder($incidencia)
 			->add('componente', 'text', ['label' => 'Componente'])
 			->add('observaciones', 'textarea', ['label' => 'Observaciones'])
-			->add('cliente', 'entity', array(
+			/* Todos estos campos se rellenan automáticamente */
+			/*->add('cliente', 'entity', array(
 					'class' => 'AppBundle:Cliente',
 					'label' => 'Cliente',
-					'choice_label' => 'name'))
-			/*->add('helpdesk', 'entity', array(
+					'choice_label' => 'username'))
+			->add('helpdesk', 'entity', array(
 					'class' => 'AppBundle:HelpDesk',
 					'label' => 'Help-Desk',
-					'choice_label' => 'name'))*/
-			/*->add('tecnico', 'entity', array(
+					'choice_label' => 'name'))
+			->add('tecnico', 'entity', array(
 					'class' => 'AppBundle:Tecnico',
 					'label' => 'Tecnico',
-					'choice_label' => 'name'))*/
-			/*->add('administrador', 'entity', array(
+					'choice_label' => 'name'))
+			->add('administrador', 'entity', array(
 					'class' => 'AppBundle:Administrador',
 					'label' => 'Admin',
-					'choice_label' => 'name'))*/			
-			/*->add('estado', 'entity', array(
+					'choice_label' => 'name'))			
+			->add('estado', 'entity', array(
 					'class' => 'AppBundle:Estado',
 					'label' => 'Estado',
-					'choice_label' => 'estado'))*/
-			/*->add('fecha_alta', 'entity', array(
+					'choice_label' => 'estado'))
+			->add('fecha_alta', 'entity', array(
 					'class' => 'AppBundle:Fecha_alta',
 					'label' => 'Fecha Alta',					
 					'choice_label' => 'name'))
@@ -110,7 +166,6 @@ class IncidenciaController extends Controller {
 	}
 
 	public function editAction($id, Request $request) {
-
 
 
 	}

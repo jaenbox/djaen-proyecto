@@ -25,21 +25,30 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
 
-				<h2>Incidencias</h2>
+				{% if is_granted('ROLE_USER') %}
+        			<h2>Incidencias {{ user.username }}</h2>
+        		{% else %}
+        			<h2>Incidencias </h2>
+        		{% endif %}
 				<hr>	
 				<p>Gestión de incidencias.</p>
 				<hr>
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#sectionA">Incidencias</a></li>
-					{#% if is_granted('ROLE_ADMIN') %#}
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
 					<li><a data-toggle="tab" href="#sectionB">Estados</a></li>
-					{#% endif %#}
+					{% endif %}
 				</ul>
 				<div class="tab-content">
 					<div id="sectionA" class="tab-pane fade in active">
-        				<h2>Incidencia</h2>
+						<h2>Incidencias</h2>
 						<a href="{{ path('newIncidencia') }}"><button type="button" class="btn btn-default">Nueva</button></a>	
-						<hr>	
+						<hr>
+						{{ user.username }}
+						<br>
+						{% for rol in roles%}	
+						{{ rol.role }}						
+						{% endfor %}
 						<table class="table table-striped">
 							<tbody>
 								<thead>
@@ -49,10 +58,9 @@
 										<td>Estado</td>
 										<td>Fecha Alta</td>
 										<td>Fecha Cierre</td>
-										<td></td>
-										{% if is_granted('ROLE_ADMIN') %}
-											<td>{{ 'global.edit'|trans }}</td>
-											<td>{{ 'global.delete'|trans }}</td>
+										{% if is_granted('ROLE_SUPER_ADMIN') %}
+											<td>Editar</td>
+											<td>Borrar</td>
 										{% endif %}
 									</tr>
 								</thead>
@@ -72,8 +80,10 @@
 											{% endif %}		
 											{% if incidencia.fechaCierre.fecha | default("") %}								
 												<td>{{ incidencia.fecha_cierre|date("d/m/Y") }}</td>
+											{% else %}
+												<td></td>
 											{% endif %}
-											{% if is_granted('ROLE_ADMIN') %}
+											{% if is_granted('ROLE_SUPER_ADMIN') %}
 											<td><a href="{{
 												path(
 													'editIncidencia',

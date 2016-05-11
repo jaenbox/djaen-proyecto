@@ -27,8 +27,8 @@
 		<hr>
 		<table class="table">
 			<tbody>
-				<tr><th>Cliente</th><td>{{ incidencia.cliente.name }}&nbsp;{{ incidencia.cliente.surname }}</td></tr>
-				<tr><th>Incidencia creada por</th><td>{{ incidencia.helpdesk.id }}</td></tr>
+				<tr><th>Cliente</th><td>{{ incidencia.cliente.username }}&nbsp;{{ incidencia.cliente.surname }}</td></tr>
+				<tr><th>Help Desk asignado</th><td>{{ incidencia.helpdesk.id }}</td></tr>
 				{% if incidencia.tecnico | default("") %}
 					<tr><th>Técnico asignado</th><td>{{ incidencia.tecnico.id }}</td></tr>
 					{% else %}

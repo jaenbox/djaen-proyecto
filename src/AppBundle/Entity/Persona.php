@@ -103,7 +103,7 @@ class Persona implements AdvancedUserInterface, \Serializable {
      * @ORM\ManyToMany(targetEntity="Roles", inversedBy="persona")
      *
      */
-    private $roles;
+    protected  $roles;
     
     public function __construct()
     {
