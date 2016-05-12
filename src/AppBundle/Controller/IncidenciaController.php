@@ -12,6 +12,8 @@ use AppBundle\Entity\Estado;
 use AppBundle\Entity\Fecha_alta;
 use Monolog\Logger;
 use AppBundle\Entity\HelpDesk;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\True;
 
 
 class IncidenciaController extends Controller {
@@ -47,8 +49,10 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el cliente se almacena en el array.
-				if($in->getCliente()->getId() == $idUser) {
-					$array[] = $in;
+				if(is_object($in) == True) {
+					if($in->getCliente()->getId() == $idUser) {
+						$array[] = $in;
+					}
 				}
 			}
 			
@@ -59,8 +63,10 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el helpdesk se almacena en el array.
-				if($in->getHelpdesk()->getId() == $idUser) {
-					$array[] = $in;
+				if(is_object($in) == True) {
+					if($in->getHelpdesk()->getId() == $idUser) {
+						$array[] = $in;
+					}	
 				}
 			}
 			// Se muestra la plantilla por defecto con el listado de incidencias.
@@ -70,9 +76,12 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el tecnico se almacena en el array.
-				if($in->getTecnico()->getId() == $idUser) {
-					$array[] = $in;
-				}
+				if(is_object($in) == True) {
+					if($in->getTecnico()->getId() == $idUser) {
+						$array[] = $in;
+					}	
+				}															
+								
 			}
 			// Se muestra la plantilla por defecto con el listado de incidencias.
 			return $this->render('Incidencia/default.html.twig', array( 'incidencias' => $array, 'estados' => $estados, 'user' => $user, 'roles' => $roles));
@@ -90,28 +99,34 @@ class IncidenciaController extends Controller {
 		
 		// Se recoge el usuario
 		$user = $this->get('security.context')->getToken()->getUser();
+		$roles = $user->getRoles();
+		foreach($roles as $ad) {
+			// Rol del usuario 'string'
+			$rol = (string)$ad->getRole();
+		}
 		
 		// Objeto usuario
 		$incidencia = new Incidencia();
-		
-		$admin = self::select_admin();
-		$hd = self::select_helpdesk();
-		$estado = self::default_estado();
-		$fecha = self::get_date(); 
-		
-		$incidencia->setAdministrador($admin);
-		$incidencia->setHelpdesk($hd);
-		$incidencia->setEstado($estado); // Por defecto estado en "espera"
-		$incidencia->setFechaAlta($fecha); // Fecha de la máquina
-		$incidencia->setCliente($user);	// Usuario que crea la incidencia.
-		
-		// Creamos el formulario
-		$form = $this->createFormBuilder($incidencia)
+			
+		if($rol == 'ROLE_USER') {
+			$admin = self::select_admin();
+			$hd = self::select_helpdesk();
+			$estado = self::default_estado();
+			$fecha = self::get_date();
+			
+			$incidencia->setAdministrador($admin);
+			$incidencia->setHelpdesk($hd);
+			$incidencia->setEstado($estado); // Por defecto estado en "espera"
+			$incidencia->setFechaAlta($fecha); // Fecha de la máquina
+			$incidencia->setCliente($user);	// Usuario que crea la incidencia.
+			
+			// Creamos el formulario
+			$form = $this->createFormBuilder($incidencia)
 			->add('componente', 'text', ['label' => 'Componente'])
 			->add('observaciones', 'textarea', ['label' => 'Observaciones'])
 			/* Todos estos campos se rellenan automáticamente */
 			/*->add('cliente', 'entity', array(
-					'class' => 'AppBundle:Cliente',
+			 'class' => 'AppBundle:Cliente',
 					'label' => 'Cliente',
 					'choice_label' => 'username'))
 			->add('helpdesk', 'entity', array(
@@ -125,22 +140,67 @@ class IncidenciaController extends Controller {
 			->add('administrador', 'entity', array(
 					'class' => 'AppBundle:Administrador',
 					'label' => 'Admin',
-					'choice_label' => 'name'))			
+					'choice_label' => 'name'))
 			->add('estado', 'entity', array(
 					'class' => 'AppBundle:Estado',
 					'label' => 'Estado',
 					'choice_label' => 'estado'))
 			->add('fecha_alta', 'entity', array(
 					'class' => 'AppBundle:Fecha_alta',
-					'label' => 'Fecha Alta',					
+					'label' => 'Fecha Alta',
 					'choice_label' => 'name'))
 			->add('fecha_cierre', 'entity', array(
 					'class' => 'AppBundle:Fecha_cierre',
 					'label' => 'Fecha Cierre',
 					'choice_label' => 'name'))*/
-						
-			->add('save', 'submit', array('label' => 'Guardar'))			
+			
+			->add('save', 'submit', array('label' => 'Guardar'))
 			->getForm();
+			
+		} elseif ($rol == 'ROLE_SUPER_ADMIN') {
+			
+			$estado = self::default_estado();
+			$fecha = self::get_date();
+			
+			$incidencia->setEstado($estado); // Por defecto estado en "espera"
+			$incidencia->setFechaAlta($fecha); // Fecha de la máquina
+			
+			// Creamos el formulario
+			$form = $this->createFormBuilder($incidencia)
+			->add('componente', 'text', ['label' => 'Componente'])
+			->add('observaciones', 'textarea', ['label' => 'Observaciones'])
+			->add('cliente', 'entity', array(
+			 'class' => 'AppBundle:Cliente',
+					'label' => 'Cliente',
+					'choice_label' => 'username'))
+			->add('helpdesk', 'entity', array(
+					'class' => 'AppBundle:HelpDesk',
+					'label' => 'Help-Desk',
+					'choice_label' => 'username'))
+			->add('tecnico', 'entity', array(
+					'class' => 'AppBundle:Tecnico',
+					'label' => 'Tecnico',
+					'choice_label' => 'username'))
+			->add('administrador', 'entity', array(
+					'class' => 'AppBundle:Administrador',
+					'label' => 'Admin',
+					'choice_label' => 'username'))
+			/*->add('estado', 'entity', array(
+					'class' => 'AppBundle:Estado',
+					'label' => 'Estado',
+					'choice_label' => 'estado'))*/
+			/*->add('fecha_alta', 'entity', array(
+					'class' => 'AppBundle:Fecha_alta',
+					'label' => 'Fecha Alta',
+					'choice_label' => 'fecha'))*/
+			/*->add('fecha_cierre', 'entity', array(
+					'class' => 'AppBundle:Fecha_cierre',
+					'label' => 'Fecha Cierre',
+					'choice_label' => 'fecha'))*/
+				
+			->add('save', 'submit', array('label' => 'Guardar'))
+			->getForm();
+		}
 		
 		if($request->isMethod('POST')) {
 			// Recogemos los datos del formulario.

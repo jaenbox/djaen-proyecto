@@ -6,8 +6,8 @@ security:
           cost: 12
 
     role_hierarchy:
-        ROLE_TEC:       ROLE_USER
-        ROLE_HELP:       ROLE_USER
+        ROLE_TEC: ROLE_USER
+        ROLE_HELP: ROLE_USER        
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_USER ]
 
     providers:

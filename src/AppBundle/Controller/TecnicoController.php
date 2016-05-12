@@ -17,7 +17,7 @@ class TecnicoController extends Controller {
 		// Objeto tecnico
 		$tecnico = new Tecnico();
 		$admin = self::select_admin();
-		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('2');
+		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('3');
 			
 		$tecnico->setIsActive(True);
 		$cadena_salt = md5(uniqid(null, true));

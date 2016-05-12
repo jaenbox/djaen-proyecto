@@ -19,7 +19,7 @@ class ClienteController extends Controller {
 		// Objeto usuario
 		$cliente = new Cliente();
 		$admin = self::select_admin();
-		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('3');
+		$rol = $this->getDoctrine()->getRepository('AppBundle:Roles')->find('4');
 		
 		$cliente->setIsActive(True);
 		$cliente->setAdministrador($admin);

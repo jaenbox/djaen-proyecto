@@ -24,12 +24,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-12">
-
-				{% if is_granted('ROLE_USER') %}
-        			<h2>Incidencias {{ user.username }}</h2>
-        		{% else %}
-        			<h2>Incidencias </h2>
-        		{% endif %}
+        		<h2>Incidencias {{ user.username }}</h2>
 				<hr>	
 				<p>Gestión de incidencias.</p>
 				<hr>
@@ -42,13 +37,13 @@
 				<div class="tab-content">
 					<div id="sectionA" class="tab-pane fade in active">
 						<h2>Incidencias</h2>
-						<a href="{{ path('newIncidencia') }}"><button type="button" class="btn btn-default">Nueva</button></a>	
-						<hr>
-						{{ user.username }}
-						<br>
-						{% for rol in roles%}	
-						{{ rol.role }}						
+						{% for rol in roles%}
+							{# No se le permite a los help desk y tecnicos generar averias#}
+							{% if rol.role != 'ROLE_HELP' and rol.role != 'ROLE_TEC'%}
+								<a href="{{ path('newIncidencia') }}"><button type="button" class="btn btn-default">Nueva</button></a>	
+							{% endif %}	
 						{% endfor %}
+						<hr>
 						<table class="table table-striped">
 							<tbody>
 								<thead>
@@ -58,6 +53,12 @@
 										<td>Estado</td>
 										<td>Fecha Alta</td>
 										<td>Fecha Cierre</td>
+										{% if is_granted('ROLE_HELP') %}
+											<td>Editar</td>
+										{% endif %}
+										{% if is_granted('ROLE_TEC') %}
+											<td>Editar</td>
+										{% endif %}
 										{% if is_granted('ROLE_SUPER_ADMIN') %}
 											<td>Editar</td>
 											<td>Borrar</td>
@@ -82,6 +83,22 @@
 												<td>{{ incidencia.fecha_cierre|date("d/m/Y") }}</td>
 											{% else %}
 												<td></td>
+											{% endif %}
+											{% if is_granted('ROLE_HELP') %}
+											<td><a href="{{
+												path(
+													'editIncidencia',
+													{ 'id': incidencia.id }
+												) 
+												}}"><i class="fa fa-pencil-square-o"></i></a></td>
+											{% endif %}
+											{% if is_granted('ROLE_TEC') %}
+											<td><a href="{{
+												path(
+													'editIncidencia',
+													{ 'id': incidencia.id }
+												) 
+												}}"><i class="fa fa-pencil-square-o"></i></a></td>
 											{% endif %}
 											{% if is_granted('ROLE_SUPER_ADMIN') %}
 											<td><a href="{{
