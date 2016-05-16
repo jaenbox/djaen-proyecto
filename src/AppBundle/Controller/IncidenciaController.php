@@ -14,6 +14,8 @@ use Monolog\Logger;
 use AppBundle\Entity\HelpDesk;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\True;
+use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Form\Type\IncidenciaForm;
 
 
 class IncidenciaController extends Controller {
@@ -49,7 +51,7 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el cliente se almacena en el array.
-				if(is_object($in) == True) {
+				if(is_object($in->getCliente()) == True) {
 					if($in->getCliente()->getId() == $idUser) {
 						$array[] = $in;
 					}
@@ -63,7 +65,7 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el helpdesk se almacena en el array.
-				if(is_object($in) == True) {
+				if(is_object($in->getHelpdesk()) == True) {
 					if($in->getHelpdesk()->getId() == $idUser) {
 						$array[] = $in;
 					}	
@@ -76,11 +78,11 @@ class IncidenciaController extends Controller {
 			
 			foreach($incidencias as $in) {
 				// Si coincide la incidencia con el tecnico se almacena en el array.
-				if(is_object($in) == True) {
+				if(is_object($in->getTecnico()) == True) {
 					if($in->getTecnico()->getId() == $idUser) {
 						$array[] = $in;
 					}	
-				}															
+				}																					
 								
 			}
 			// Se muestra la plantilla por defecto con el listado de incidencias.
@@ -93,9 +95,6 @@ class IncidenciaController extends Controller {
 	}
 	
 	public function newAction(Request $request) {
-		$logger = $this->get('logger');
-		$logger->info(' ============= FECHA =======================');
-		$logger->info(strftime( "%Y/%m/%d", time() ));
 		
 		// Se recoge el usuario
 		$user = $this->get('security.context')->getToken()->getUser();
@@ -199,7 +198,8 @@ class IncidenciaController extends Controller {
 					'choice_label' => 'fecha'))*/
 				
 			->add('save', 'submit', array('label' => 'Guardar'))
-			->getForm();
+			->getForm();		
+			
 		}
 		
 		if($request->isMethod('POST')) {
@@ -226,8 +226,99 @@ class IncidenciaController extends Controller {
 	}
 
 	public function editAction($id, Request $request) {
-
-
+		
+		$incidencia = new Incidencia();
+				
+		$em = $this->getDoctrine()->getManager();
+		$incidencia = $em->getRepository('AppBundle:Incidencia')->find($id);
+		$form = $this->createForm(new IncidenciaForm(), $incidencia);
+		// Creamos el formulario
+		/*$form = $this->createFormBuilder($incidencia)		
+			->add('componente', 'text', array(
+					'label' => 'Componente',
+					'read_only' => true					
+			))
+			->add('observaciones', 'textarea', array(
+					'label' => 'Observaciones'					
+			))
+			->add('cliente', 'entity', array(
+					'class' => 'AppBundle:Cliente',
+					'label' => 'Cliente',
+					'choice_label' => 'username',
+					'read_only' => true
+			))
+			->add('helpdesk', 'entity', array(
+					'class' => 'AppBundle:HelpDesk',
+					'label' => 'Help-Desk',
+					'choice_label' => 'username',
+					'read_only' => true
+			))
+			->add('tecnico', 'entity', array(
+					'class' => 'AppBundle:Tecnico',
+					'label' => 'Tecnico',
+					'choice_label' => 'username',
+					'required' => true
+			))
+			->add('administrador', 'entity', array(
+					'class' => 'AppBundle:Administrador',
+					'label' => 'Admin',
+					'choice_label' => 'username',
+					'read_only' => true
+			))
+			->add('estado', 'entity', array(
+					 'class' => 'AppBundle:Estado',
+					'label' => 'Estado',
+					'choice_label' => 'estado',
+					'required' => true
+			))
+			/*->add('fecha_alta', 'entity', array(
+			 'class' => 'AppBundle:Fecha_alta',
+					'label' => 'Fecha Alta',
+					'choice_label' => 'fecha'))
+			->add('fecha_cierre', 'entity', array(
+			 'class' => 'AppBundle:Fecha_cierre',
+					'label' => 'Fecha Cierre',
+					'choice_label' => 'fecha',
+					'required' => false
+			))
+						
+			->add('save', 'submit', array('label' => 'Guardar'))
+			->getForm();*/
+			
+		/*if($request->isMethod('POST')) {
+			// Recogemos los datos del formulario.
+			$form->handlerequest($request);
+				
+			if($form->isValid()) {
+				// Se almacena en la base de datos.
+				$em = $this->getDoctrine()->getManager();
+				$em->persist($incidencia);	// Persistimos
+				$em->flush();			// Alamcenamos en la db
+		
+				// Se comprueba que botón se a pulsado. "save" or "saveAndAdd"
+				$nextAction = 'incidencia';
+		
+				return $this->redirectToRoute($nextAction);	// Mostramos $nexAction. formulario o listado.
+			}
+				
+		}*/
+		$form->handleRequest($request);
+		if($form->isSubmitted() and $form->isValid()) {
+			
+			$em = $this->getDoctrine()->getManager();
+		
+			$em->persist($incidencia);
+			$em->flush();
+		
+			// Se comprueba que botón se a pulsado. "save" or "saveAndAdd"
+			$nextAction = 'incidencia';
+		
+			return $this->redirectToRoute($nextAction);	// Mostramos $nexAction. formulario o listado.
+		}
+		
+		return $this->render('Incidencia/new.html.twig', array(
+				'form' => $form->createView(),
+		));
 	}
 
 	public function deleteAction(Request $request) {
@@ -365,4 +456,6 @@ class IncidenciaController extends Controller {
 		return $fecha;
 		
 	}
+	
+
 }

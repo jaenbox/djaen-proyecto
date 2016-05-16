@@ -56,7 +56,7 @@ class Fecha {
      * @param \DateTime $fecha
      * @return Fecha
      */
-    public function setFecha(\DateTime $fecha)
+    public function setFecha($fecha)
     {
         $this->fecha = $fecha;
 

@@ -51,6 +51,8 @@
 										<td>Id</td>
 										<td>Componente</td>
 										<td>Estado</td>
+										<td>Help Desk</td>
+										<td>Técnico</td>
 										<td>Fecha Alta</td>
 										<td>Fecha Cierre</td>
 										{% if is_granted('ROLE_HELP') %}
@@ -66,55 +68,66 @@
 									</tr>
 								</thead>
 									{% for incidencia in incidencias%}
-										<tr>
-											<td><a href="{{
-												path(
-													'showIncidencia',
-													{ 'id': incidencia.id }
-												)
-												}}">
-												{{ incidencia.id }}</a></td>						
-											<td>{{ incidencia.componente }}</td>
-											<td>{{ incidencia.estado.estado }}</td>		
-											{% if incidencia.fechaAlta.fecha | default("") %}
-												<td>{{ incidencia.fechaAlta.fecha|date("d/m/Y") }}</td>
-											{% endif %}		
-											{% if incidencia.fechaCierre.fecha | default("") %}								
-												<td>{{ incidencia.fecha_cierre|date("d/m/Y") }}</td>
-											{% else %}
-												<td></td>
-											{% endif %}
-											{% if is_granted('ROLE_HELP') %}
-											<td><a href="{{
-												path(
-													'editIncidencia',
-													{ 'id': incidencia.id }
-												) 
-												}}"><i class="fa fa-pencil-square-o"></i></a></td>
-											{% endif %}
-											{% if is_granted('ROLE_TEC') %}
-											<td><a href="{{
-												path(
-													'editIncidencia',
-													{ 'id': incidencia.id }
-												) 
-												}}"><i class="fa fa-pencil-square-o"></i></a></td>
-											{% endif %}
-											{% if is_granted('ROLE_SUPER_ADMIN') %}
-											<td><a href="{{
-												path(
-													'editIncidencia',
-													{ 'id': incidencia.id }
-												) 
-												}}"><i class="fa fa-pencil-square-o"></i></a></td>
-											<td><a href="{{
-												path(
-													'deleteIncidencia',
-													{ 'id': incidencia.id }
-												) 
-												}}"><i class="fa fa-trash fa-lg"></i></a></td>
-											{% endif %}
-										</tr>
+										{% for rol in roles%}		
+											{# ROLE_HELP no puede ver las incidencias que ya estan en curso. Solo puede ver las que se acaban de crear y no estan en trámites. #}									
+											{#% if rol.role == 'ROLE_HELP' and incidencia.estado.estado == 'espera'%#}											
+												<tr>
+													<td><a href="{{
+														path(
+															'showIncidencia',
+															{ 'id': incidencia.id }
+														)
+														}}">
+														{{ incidencia.id }}</a></td>						
+													<td>{{ incidencia.componente }}</td>
+													<td>{{ incidencia.estado.estado }}</td>		
+													<td>{{ incidencia.helpdesk.id }}</td>	
+													{% if incidencia.tecnico.id | default("") %}
+														<td>{{ incidencia.tecnico.id }}</td>												
+													{% else %}
+														<td>No asignado</td>	
+													{% endif %}
+													{% if incidencia.fechaAlta.fecha | default("") %}
+														<td>{{ incidencia.fechaAlta.fecha|date("d/m/Y") }}</td>
+													{% endif %}		
+													{% if incidencia.fechaCierre.fecha | default("") %}								
+														<td>{{ incidencia.fecha_cierre|date("d/m/Y") }}</td>
+													{% else %}
+														<td></td>
+													{% endif %}
+													{% if is_granted('ROLE_HELP') %}
+													<td><a href="{{
+														path(
+															'editIncidencia',
+															{ 'id': incidencia.id }
+														) 
+														}}"><i class="fa fa-pencil-square-o"></i></a></td>
+													{% endif %}
+													{% if is_granted('ROLE_TEC') %}
+													<td><a href="{{
+														path(
+															'editIncidencia',
+															{ 'id': incidencia.id }
+														) 
+														}}"><i class="fa fa-pencil-square-o"></i></a></td>
+													{% endif %}
+													{% if is_granted('ROLE_SUPER_ADMIN') %}
+													<td><a href="{{
+														path(
+															'editIncidencia',
+															{ 'id': incidencia.id }
+														) 
+														}}"><i class="fa fa-pencil-square-o"></i></a></td>
+													<td><a href="{{
+														path(
+															'deleteIncidencia',
+															{ 'id': incidencia.id }
+														) 
+														}}"><i class="fa fa-trash fa-lg"></i></a></td>
+													{% endif %}
+												</tr>
+											{#% endif %#}	
+										{% endfor %}
 									{% endfor %} 
 							</tbody>
 						</table>

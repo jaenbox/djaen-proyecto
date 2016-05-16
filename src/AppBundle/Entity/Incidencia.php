@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 /**
  *
@@ -83,7 +85,7 @@ class Incidencia {
 	 * @ORM\JoinColumn(name="fechaCierre_id", referencedColumnName="id", nullable = true)
 	 */
 	protected $fechaCierre;
-
+	
     /**
      * Get id
      *
