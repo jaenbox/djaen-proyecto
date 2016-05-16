@@ -4,9 +4,9 @@ namespace AppBundle\Form\EventListener;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use AppBundle\Entity\Fecha_cierre;
 use Symfony\Component\Form\Form;
 use AppBundle\Entity\Fecha;
+use AppBundle\Entity\Fecha_cierre;
 
 class AddDateCierreSubscriber implements EventSubscriberInterface {
 	
@@ -22,29 +22,13 @@ class AddDateCierreSubscriber implements EventSubscriberInterface {
 	public function preSubmit(FormEvent $event)	{
 		
 		$data = $event->getData();
-		$form = $event->getForm();
-				
+						
 		if($data['estado'] == '1') {
-			/*self::persistFechaCierre();*/
-			$fecha = self::get_date();
-			$data['fecha_cierre'] = $fecha;
-			
-			$form->add('fecha_cierre', 'text', array(
-				'data' => $fecha
-			));
+			$data['fecha_cierre'] = self::get_date();
+			return true;
+					
 		}
-		
-	}
-	
-	private function persistFechaCierre() {
-		
-	 	$Fecha = new Fecha();
-		$fecha = self::get_date();
-		$Fecha->setFecha($fecha);
-		
-		$em = $this->getDoctrine()->getManager();
-		$em->persist($Fecha);	// Persistimos
-		$em->flush();
+		return false;
 	}
 	
 	private function get_date() {
