@@ -18,8 +18,8 @@
 		"sensio/distribution-bundle" : "~4.0",
 		"sensio/framework-extra-bundle" : "^3.0.2",
 		"incenteev/composer-parameter-handler" : "~2.0",
-		"friendsofsymfony/user-bundle": "~2.0@dev",
-		"ircmaxell/password-compat": "^1.0"
+		"friendsofsymfony/user-bundle" : "~2.0@dev",
+		"ircmaxell/password-compat" : "^1.0"
 	},
 	"require-dev" : {
 		"sensio/generator-bundle" : "~2.3",
@@ -29,8 +29,6 @@
 		"post-install-cmd" : [
 			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
 		],
@@ -41,10 +39,7 @@
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-		],
-        "compile": [
-            "php app/console doctrine:schema:update --force"
-        ]
+		]
 	},
 	"config" : {
 		"bin-dir" : "bin",
@@ -58,16 +53,16 @@
 		"symfony-assets-install" : "relative",
 		"incenteev-parameters" : {
 			"file" : "app/config/parameters.yml",
-			"env-map": {
-                  "database_host": "DATABASE_HOST",
-                  "database_port": "DATABASE_PORT",
-                  "database_name": "DATABASE_NAME",
-                  "database_user": "DATABASE_USER",
-                  "database_password": "DATABASE_PASSWORD"
-            }
+			"env-map" : {
+				"database_host" : "DATABASE_HOST",
+				"database_port" : "DATABASE_PORT",
+				"database_name" : "DATABASE_NAME",
+				"database_user" : "DATABASE_USER",
+				"database_password" : "DATABASE_PASSWORD"
+			}
 		}
 	},
-	"heroku": {
-        "framework": "symfony2"
-    }
+	"heroku" : {
+		"framework" : "symfony2"
+	}
 }
