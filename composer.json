@@ -26,9 +26,6 @@
 		"symfony/phpunit-bridge" : "~2.7"
 	},
 	"scripts" : {
-		"pre-install-cmd": [
-            "AppBundle\\Composer\\HerokuDatabase::populateEnvironment"
-        ],
 		"post-install-cmd" : [
 			"Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
 			"Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
